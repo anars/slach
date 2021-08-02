@@ -1,1 +1,1 @@
-# slach
+# Slack + Schach = Slach
