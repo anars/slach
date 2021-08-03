@@ -34,7 +34,9 @@ exports.handler = async (event) => {
     }
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
-            body += `<path d="${pieces[["fill", "stroke"][Math.floor(Math.random()*2)]][["bishop", "king", "knight", "pawn", "queen", "rock"][Math.floor(Math.random()*6)]]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#000"/>\n`;
+            const cPiece = ["bishop", "king", "knight", "pawn", "queen", "rock"][Math.floor(Math.random() * 6)];
+            body += `<path d="${pieces.fill[cPiece]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${[darkPieceColor, lightPieceColor][Math.floor(Math.random()*2)]}"/>\n`;
+            body += `<path d="${pieces.stroke[cPiece]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#000"/>\n`;
         }
     }
     body += "</svg>";
