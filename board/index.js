@@ -41,8 +41,8 @@ exports.handler = async (event) => {
         for (let x = 0; x < 8; x++) {
             body += `<rect x="${x * 10 + 10}" y="${y * 10 + 10}" width="10" height="10" fill="#${whitesTurn ? lightTileColor : darkTileColor}"/>\n`;
             if (board[y][x] !== " ") {
-                body += `<path d="${pieces.fill[board[y][x].toLowerCase() + 'f']}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightPieceColor : darkPieceColor}"/>\n`;
-                body += `<path d="${pieces.stroke[board[y][x].toLowerCase() + 's']}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightStrokeColor : darkStrokeColor}"/>\n`;
+                body += `<path d="${pieces[board[y][x].toLowerCase() + 'f']}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightPieceColor : darkPieceColor}"/>\n`;
+                body += `<path d="${pieces[board[y][x].toLowerCase() + 's']}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightStrokeColor : darkStrokeColor}"/>\n`;
             }
             whitesTurn = !whitesTurn;
         }
