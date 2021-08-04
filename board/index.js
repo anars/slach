@@ -23,38 +23,38 @@ String.prototype.replaceAll = function replaceAll(regex, replacement) {
 
 exports.handler = async (event) => {
     let body = "<svg version=\"1.1\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n";
-    let darkTileColor = "779556";
-    let lightTileColor = "ebecd0";
-    let darkPieceColor = "575452";
-    let lightPieceColor = "f9f9f9";
+    let darkTileColor = event.queryStringParameters.dtc || "779556";
+    let lightTileColor = event.queryStringParameters.ltc || "ebecd0";
+    let darkPieceColor = event.queryStringParameters.dpc || "575452";
+    let lightPieceColor = event.queryStringParameters.ltc || "f9f9f9";
+    let lightStrokeColor = event.queryStringParameters.lsc || "000";
+    let darkStrokeColor = event.queryStringParameters.dsc || "000";
     let board = []
     const defaultFEN = "8/8/8/8/8/8/8/8 w - - 0 1";
     const fenRegRex = new RegExp("([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8}) ([wb]) (K?Q?k?q?|-) ([a-h][1-8]|-) ([0-9]+) ([0-9]+)");
-    let fenPieces = fenRegRex.exec((event.queryStringParameters.fen || defaultFEN).trim());
-    if (fenPieces === null)
-        fenPieces = fenRegRex.exec(defaultFEN);
-    let whiteSide = fenPieces[9] === "w";
+    const fenPieces = fenRegRex.exec((event.queryStringParameters.fen || defaultFEN).trim()) || fenRegRex.exec(defaultFEN);
+    let whitesTurn = fenPieces[9] === "w";
     for (let row = 1; row < 9; row++) {
         let pieces = fenPieces[row];
         for (let number = 1; number < 9; number++)
             pieces = pieces.replaceAll(`${number}`, "        ".substr(0, number));
         board.push(pieces.split(""));
     }
-    if (!whiteSide) {
+    if (!whitesTurn) {
         for (let row = 0; row < 8; row++)
             board[row] = board[row].reverse();
         board = board.reverse();
     }
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
-            body += `<rect x="${x * 10 + 10}" y="${y * 10 + 10}" width="10" height="10" fill="#${whiteSide ? lightTileColor : darkTileColor}"/>\n`;
+            body += `<rect x="${x * 10 + 10}" y="${y * 10 + 10}" width="10" height="10" fill="#${whitesTurn ? lightTileColor : darkTileColor}"/>\n`;
             if (board[y][x] !== " ") {
                 body += `<path d="${pieces.fill[board[y][x].toLowerCase()]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightPieceColor : darkPieceColor}"/>\n`;
-                body += `<path d="${pieces.stroke[board[y][x].toLowerCase()]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#000"/>\n`;
+                body += `<path d="${pieces.stroke[board[y][x].toLowerCase()]}" transform="translate(${x * 10 + 10}, ${y * 10 + 10})" fill="#${board[y][x] === board[y][x].toUpperCase() ? lightStrokeColor : darkStrokeColor}"/>\n`;
             }
-            whiteSide = !whiteSide;
+            whitesTurn = !whitesTurn;
         }
-        whiteSide = !whiteSide;
+        whitesTurn = !whitesTurn;
     }
     body += "</svg>";
     return {
