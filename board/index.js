@@ -22,9 +22,9 @@ exports.handler = async (event) => {
     let lightStrokeColor = event.queryStringParameters.lsc || "000";
     let darkStrokeColor = event.queryStringParameters.dsc || "000";
     let board = []
-    const defaultFEN = "8/8/8/8/8/8/8/8 w - - 0 1";
+    const fenDefault = "8/8/8/8/8/8/8/8 w - - 0 1";
     const fenRegRex = new RegExp("([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8}) ([wb]) (K?Q?k?q?|-) ([a-h][1-8]|-) ([0-9]+) ([0-9]+)");
-    const fenPieces = fenRegRex.exec((event.queryStringParameters.fen || defaultFEN).trim()) || fenRegRex.exec(defaultFEN);
+    const fenPieces = fenRegRex.exec((event.queryStringParameters.fen || fenDefault).trim()) || fenRegRex.exec(fenDefault);
     let whitesTurn = fenPieces[9] === "w";
     for (let row = 1; row < 9; row++) {
         let pieces = fenPieces[row];
