@@ -16,12 +16,12 @@ const pieces = {
 exports.handler = async (event) => {
     let board = [];
     let body = "<svg version=\"1.1\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n";
-    let colorTileDark = event.queryStringParameters.dtc || "779556";
-    let colorTileLight = event.queryStringParameters.ltc || "ebecd0";
     let colorPieceDark = event.queryStringParameters.dpc || "575452";
     let colorPieceLight = event.queryStringParameters.ltc || "f9f9f9";
-    let colorStrokelight = event.queryStringParameters.lsc || "000";
     let colorStrokeDark = event.queryStringParameters.dsc || "000";
+    let colorStrokelight = event.queryStringParameters.lsc || "000";
+    let colorTileDark = event.queryStringParameters.dtc || "779556";
+    let colorTileLight = event.queryStringParameters.ltc || "ebecd0";
     const fenDefault = "8/8/8/8/8/8/8/8 w - - 0 1";
     const fenRegRex = new RegExp("([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8})/([rnbqkp1-8RNBQKP]{1,8}) ([wb]) (K?Q?k?q?|-) ([a-h][1-8]|-) ([0-9]+) ([0-9]+)");
     const fenPieces = fenRegRex.exec((event.queryStringParameters.fen || fenDefault).trim()) || fenRegRex.exec(fenDefault);
